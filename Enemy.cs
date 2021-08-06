@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Enemy : MonoBehaviour
@@ -15,13 +15,10 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         enemyMovement();
-        
-
-
     }
     void enemyMovement()
     {
-                //move enemy down at 4 meters per second
+        //move enemy down at 4 meters per second
         //if hit bottom of screen, respawn at top
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         if(transform.position.y <= -5f)
@@ -29,13 +26,18 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(Random.Range(-7.11f, 7.11f), 5.7f, 0);
         }
     }
+    //collision check
     private void OnTriggerEnter(Collider other)
     { 
         if(other.tag == "Player"){
-        Destroy(this.gameObject);
+            Player player = other.transform.GetComponent<Player>();
+            if(player != null){
+            player.damage();
+            }
+            Destroy(this.gameObject);
         }
         if(other.tag == "Lazer"){
-            Destroy(other);
+            Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
     }
